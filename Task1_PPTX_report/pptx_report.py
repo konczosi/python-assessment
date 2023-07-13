@@ -88,27 +88,30 @@ def generate_picture_slide_content(sl: dict, prs: Presentation) -> None:  # type
     left = Inches(1.35)
     top = Inches(1.21)
     width = Inches(7.23)
-    slide.shapes.add_picture(img_path, left, top)
+    slide.shapes.add_picture(img_path, left, top, width=width)
 
 
 def generate_chart_slide_content(sl: dict, prs: Presentation) -> None:  # type: ignore
+    # Change csv file to binary dat
     input_file_path = sl["content"].split(".")[0] + ".csv"
     pptx_utils.convert_csv_dat_binary(input_file_path)
-    coords = np.fromfile(sl["content"]).reshape(4, 2)
-    
+    points = np.fromfile(sl["content"]).reshape(4, 2)
     title_only_slide_layout = prs.slide_layouts[5]
     slide = prs.slides.add_slide(title_only_slide_layout)
     title = slide.shapes.title
     title.text = sl["title"]
+    
+    # Draw chart
     chart_data = XyChartData()
     series_1 = chart_data.add_series("")
-    for c in coords:
-        series_1.add_data_point(c[0], c[1])
+    for p in points:
+        series_1.add_data_point(p[0], p[1])
     x, y, cx, cy = Inches(2), Inches(2), Inches(6), Inches(4.5)
-    
     chart = slide.shapes.add_chart(
         XL_CHART_TYPE.XY_SCATTER_LINES_NO_MARKERS, x, y, cx, cy, chart_data  # type: ignore
     ).chart
+    
+    # Modify chart attributes
     chart.has_legend = False
     chart.value_axis.has_major_gridlines = False
     chart.category_axis.axis_title.text_frame.text = sl["configuration"]["x-label"]
