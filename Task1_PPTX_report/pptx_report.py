@@ -1,19 +1,21 @@
-import collections
-import collections.abc
+import json
+import logging
+import pathlib
+import sys
+
+import numpy as np
 from pptx import Presentation
 from pptx.chart.data import XyChartData
 from pptx.enum.chart import XL_CHART_TYPE
 from pptx.util import Inches
-import json
-import pathlib
+
 from Task1_PPTX_report import pptx_utils
-import numpy as np
 
 FILE_PATH_PREFIX = "Task1_PPTX_report/"
 
 
 def generate_report(path: str) -> None:
-    """Generate the presentation by the json config file and save as output.txt"""
+    """Generate the presentation by the dict and save as output.pptx"""
     prs_config = read_json(path)
     sl_config = prs_config["presentation"]
     file_path = pathlib.Path("output.pptx")
@@ -100,7 +102,7 @@ def generate_chart_slide_content(sl: dict, prs: Presentation) -> None:  # type: 
     slide = prs.slides.add_slide(title_only_slide_layout)
     title = slide.shapes.title
     title.text = sl["title"]
-    
+
     # Draw chart
     chart_data = XyChartData()
     series_1 = chart_data.add_series("")
@@ -110,7 +112,7 @@ def generate_chart_slide_content(sl: dict, prs: Presentation) -> None:  # type: 
     chart = slide.shapes.add_chart(
         XL_CHART_TYPE.XY_SCATTER_LINES_NO_MARKERS, x, y, cx, cy, chart_data  # type: ignore
     ).chart
-    
+
     # Modify chart attributes
     chart.has_legend = False
     chart.value_axis.has_major_gridlines = False
@@ -119,10 +121,13 @@ def generate_chart_slide_content(sl: dict, prs: Presentation) -> None:  # type: 
 
 
 def read_json(path: str) -> dict:
-    """Read json file based on the path"""
+    """Returns a dictionary loaded from the json file"""
     config_file_path = pathlib.Path(path)
 
-    with config_file_path.open("r") as file:
-        config = json.load(file)
-
-    return config
+    try:
+        with config_file_path.open("r") as file:
+            config = json.load(file)    
+        return config
+    except FileNotFoundError as error:
+        logging.error("Opening %s file failed due to: %s", config_file_path, error)
+        sys.exit(1)
