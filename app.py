@@ -11,7 +11,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main():
-    logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s',datefmt='%Y-%m-%d %H:%M:%S' ,filename='log.log', level=logging.INFO)
+    logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s',datefmt='%Y-%m-%d %H:%M:%S' ,filename='log.log', level=logging.INFO)
     args = parse_args()
     pptx_report.generate_report(args.config)
 
