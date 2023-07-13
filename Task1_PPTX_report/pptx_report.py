@@ -27,7 +27,7 @@ def generate_slide(sl: dict, prs: Presentation) -> None:  # type: ignore
     elif sl["type"] == "list":
         generate_list_slide_content(sl, prs)
     elif sl["type"] == "picture":
-        pass
+        generate_picture_slide_content(sl, prs)
     elif True:
         pass
     else:
@@ -71,6 +71,18 @@ def generate_list_slide_content(sl: dict, prs: Presentation) -> None:  # type: i
         tf.paragraphs[i].level = e["level"]
         tf.add_paragraph()
         i += 1
+
+
+def generate_picture_slide_content(sl: dict, prs: Presentation) -> None:  # type: ignore
+    img_path = "Task1_PPTX_report/" + sl["content"]
+    title_only_slide_layout = prs.slide_layouts[5]
+    slide = prs.slides.add_slide(title_only_slide_layout)
+    title = slide.shapes.title
+    title.text = sl["title"]
+    left = Inches(1.35)
+    top = Inches(1.21)
+    width = Inches(7.23)
+    slide.shapes.add_picture(img_path, left, top)
 
 
 def read_json(path: str) -> dict:
