@@ -21,44 +21,56 @@ def generate_report(path: str) -> None:
 def generate_slide(sl: dict, prs: Presentation) -> None:  # type: ignore
     """Generate the corresponding slide by type"""
     if sl["type"] == "title":
-        title_slide_layout = prs.slide_layouts[0]
-        slide = prs.slides.add_slide(title_slide_layout)
-        title = slide.shapes.title
-        subtitle = slide.placeholders[1]
-        title.text = sl["title"]
-        subtitle.text = sl["content"]
-
+        generate_title_slide_content(sl, prs)
     elif sl["type"] == "text":
-        text_slide_layout = prs.slide_layouts[5]
-        slide = prs.slides.add_slide(text_slide_layout)
-        title = slide.shapes.title
-        title.text = sl["title"]
-        left = Inches(0.5)
-        top = Inches(1.75)
-        width = Inches(9)
-        height = Inches(4.95)
-        txBox = slide.shapes.add_textbox(left, top, width, height)
-        tf = txBox.text_frame
-        tf.text = sl["content"]
-
+        generate_text_slide_content(sl, prs)
     elif sl["type"] == "list":
-        bullet_slide_layout = prs.slide_layouts[1]
-        slide = prs.slides.add_slide(bullet_slide_layout)
-        title = slide.shapes.title
-        body_shape = slide.shapes.placeholders[1]
-        title.text = sl["title"]
-        tf = body_shape.text_frame
-        for e in sl["content"]:
-            p = tf.add_paragraph()
-            p.text = e["text"]
-            p.level = e["level"]
-    elif True:
+        generate_list_slide_content(sl, prs)
+    elif sl["type"] == "picture":
         pass
     elif True:
         pass
     else:
         # TODO handle wrong type -- log the wrong slide type
         pass
+
+
+def generate_title_slide_content(sl: dict, prs: Presentation) -> None:  # type: ignore
+    title_slide_layout = prs.slide_layouts[0]
+    slide = prs.slides.add_slide(title_slide_layout)
+    title = slide.shapes.title
+    subtitle = slide.placeholders[1]
+    title.text = sl["title"]
+    subtitle.text = sl["content"]
+
+
+def generate_text_slide_content(sl: dict, prs: Presentation) -> None:  # type: ignore
+    title_only_slide_layout = prs.slide_layouts[5]
+    slide = prs.slides.add_slide(title_only_slide_layout)
+    title = slide.shapes.title
+    title.text = sl["title"]
+    left = Inches(0.5)
+    top = Inches(1.75)
+    width = Inches(9)
+    height = Inches(4.95)
+    txBox = slide.shapes.add_textbox(left, top, width, height)
+    tf = txBox.text_frame
+    tf.text = sl["content"]
+
+
+def generate_list_slide_content(sl: dict, prs: Presentation) -> None:  # type: ignore
+    list_slide_layout = prs.slide_layouts[1]
+    slide = prs.slides.add_slide(list_slide_layout)
+    title = slide.shapes.title
+    body_shape = slide.shapes.placeholders[1]
+    title.text = sl["title"]
+    tf = body_shape.text_frame
+    i = 0
+    for e in sl["content"]:
+        tf.paragraphs[i].text = e["text"]
+        tf.paragraphs[i].level = e["level"]
+        tf.add_paragraph()
+        i += 1
 
 
 def read_json(path: str) -> dict:
