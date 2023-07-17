@@ -1,14 +1,51 @@
 # Python assessment
 
-## Instructions
+## Description
 
-1. Fork this repository to your own account
-2. Clone the repository to your local machine
-3. Complete the tasks assigned to you
-4. Commit your changes
-5. Push your changes to your forked repository
-6. Send us a link to your forked repository
+This Python application can be used to generate a Microsoft PowerPoint presentation from a json configuration file.
 
-## Tasks
+## Prerequisites
 
-### [Task 1](Task1_PPTX_report/README.md)
+- The system must have `git` and `Python` with `pip` installed.
+- The application has been tested on Windows 11 22H2 and on Ubuntu 22.04.2 LTS
+- On Windows systems it's recommended to use [Git BASH](https://gitforwindows.org/)
+
+## Installation
+
+1. Clone the repository from GitHub:
+    ```bash
+    git clone https://github.com/konczosi/python-assessment.git
+    ```
+2. Create a virtual Python environment in the repo (e.g. with venv):
+    ```bash
+    python3 -m venv .venv
+    ```
+3. Activate the virtual environment
+    ```bash
+    source .venv/bin/activate
+    ```
+4. Install the required packages with pip:
+   ```bash
+   python -m pip install -r requirements.txt
+   ```
+
+## Usage
+- Simply run the `app.py` python file with the name of the configuration file, or its absolute/relative path
+    ```bash
+    python app.py config-file
+    ```
+- For example, to generate the example presentation run:
+    ```bash
+    python app.py Task1_PPTX_report/sample.json
+    ```
+- The generated report can be found in the root directory of the application as `output.pptx`
+
+## Caveats
+- The program searches for csv and image files in the Task1_PPTX_report folder. These files must be put here.
+- The app currently resizes images to the same width. Manual scaling may be required.
+
+## Roadmap
+- Use Docker to containerize the application.
+- Write extensive unit tests.
+- Find a better solution to handle image and data files.
+- Find a better way to resize the images to fit in the slides.
