@@ -25,6 +25,7 @@ def generate_report(path: str) -> None:
         for sl in sl_config:
             generate_slide(sl, prs)
         prs.save(file_path)
+        logging.info("Successfully generated %s report", file_path)
     except KeyError as error:
         logging.error("%s Key not found in %s", error, path)
 
@@ -52,7 +53,7 @@ def generate_title_slide_content(sl: dict, prs: Presentation) -> None:  # type: 
     subtitle = slide.placeholders[1]
     title.text = sl["title"]
     subtitle.text = sl["content"]
-    logging.info("Succesfully generated a %s type slide", sl["type"])
+    logging.info("Successfully generated a %s type slide", sl["type"])
 
 
 def generate_text_slide_content(sl: dict, prs: Presentation) -> None:  # type: ignore
@@ -67,7 +68,7 @@ def generate_text_slide_content(sl: dict, prs: Presentation) -> None:  # type: i
     txBox = slide.shapes.add_textbox(left, top, width, height)
     tf = txBox.text_frame
     tf.text = sl["content"]
-    logging.info("Succesfully generated a %s type slide", sl["type"])
+    logging.info("Successfully generated a %s type slide", sl["type"])
 
 
 def generate_list_slide_content(sl: dict, prs: Presentation) -> None:  # type: ignore
@@ -83,7 +84,7 @@ def generate_list_slide_content(sl: dict, prs: Presentation) -> None:  # type: i
         tf.paragraphs[i].level = e["level"]
         tf.add_paragraph()
         i += 1
-    logging.info("Succesfully generated a %s type slide", sl["type"])
+    logging.info("Successfully generated a %s type slide", sl["type"])
 
 
 def generate_picture_slide_content(sl: dict, prs: Presentation) -> None:  # type: ignore
@@ -97,7 +98,7 @@ def generate_picture_slide_content(sl: dict, prs: Presentation) -> None:  # type
     width = Inches(7.23)
     try:
         slide.shapes.add_picture(img_path, left, top, width=width)
-        logging.info("Succesfully generated a %s type slide", sl["type"])
+        logging.info("Successfully generated a %s type slide", sl["type"])
     except FileNotFoundError as error:
         logging.error("Cannot add %s image to slide due to: %s", img_path, error)
 
@@ -127,7 +128,7 @@ def generate_chart_slide_content(sl: dict, prs: Presentation) -> None:  # type: 
         chart.value_axis.has_major_gridlines = False
         chart.category_axis.axis_title.text_frame.text = sl["configuration"]["x-label"]
         chart.value_axis.axis_title.text_frame.text = sl["configuration"]["y-label"]
-        logging.info("Succesfully generated a %s type slide", sl["type"])
+        logging.info("Successfully generated a %s type slide", sl["type"])
     except (FileNotFoundError,ValueError) as error:
         logging.error("Opening %s file failed due to: %s", input_file_path, error)
 
