@@ -16,6 +16,10 @@ This Python application can be used to generate a Microsoft PowerPoint presentat
     ```bash
     git clone https://github.com/konczosi/python-assessment.git
     ```
+1. Navigate to the repo:
+    ```bash
+    cd python-assessment/
+    ```
 2. Create a virtual Python environment in the repo (e.g. with venv):
     ```bash
     python3 -m venv .venv
