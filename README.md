@@ -21,9 +21,16 @@ This Python application can be used to generate a Microsoft PowerPoint presentat
     python3 -m venv .venv
     ```
 3. Activate the virtual environment
+    
+    Linux
     ```bash
-    source .venv/bin/activate
+    source .venv/bin/activate 
     ```
+    Windows
+     ```bash
+    source .venv/Scripts/activate
+    ```
+
 4. Install the required packages with pip:
    ```bash
    python -m pip install -r requirements.txt
