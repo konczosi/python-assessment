@@ -53,7 +53,7 @@ This Python application can be used to generate a Microsoft PowerPoint presentat
 
 ## Caveats
 - The program searches for csv and image files in the Task1_PPTX_report folder. These files must be put here.
-- The app currently resizes images to the same width. Manual scaling may be required.
+- The app currently resizes images to the same width. Manual scaling may be required after report generation.
 
 ## Roadmap
 - Use Docker to containerize the application.
